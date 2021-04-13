@@ -26,7 +26,7 @@ int readLines(struct line* first_line){
     while(str[0] != '.') {
         int len = strlen(str);
         if (prev_ended != 1){ //объединение строк
-            line->str = realloc(line->str,size);
+            line->str = realloc(line->str,sizeof(char) * (size + MAX_SIZE));
             if (line->str == NULL) {
                 perror("Not enough memory for string");
                 free(str);
