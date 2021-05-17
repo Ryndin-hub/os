@@ -5,48 +5,32 @@
 
 int main(int argc, char **argv) {
     FILE *file;
-    int print_e = printf("Real user id: %d\nEffective user id: %d\n", getuid(), geteuid());
-    if (print_e < 0){
-        perror("Can't print");
-        exit(1);
-    }
+    printf("Real user id: %d\nEffective user id: %d\n", getuid(), geteuid());
 
     file = fopen("test", "r");
     if (file == NULL){
         perror("Can't open file");
-        exit(0);
+        exit(1);
     } else {
-        print_e = printf("File opened\n");
-        if (print_e < 0){
-            perror("Can't print");
-            exit(1);
-        }
+        printf("File opened\n");
         fclose(file);
     }
 
     if (seteuid(getuid()) == -1){
         perror("Can't change effective user id");
-        return 0;
-    }
-
-    print_e = printf("Real user id: %d\nEffective user id: %d\n", getuid(), geteuid());
-    if (print_e < 0){
-        perror("Can't print");
         exit(1);
     }
 
-    file = fopen("test", "r");
+    printf("Real user id: %d\nEffective user id: %d\n", getuid(), geteuid());
+
+    file = fopen("test", "r");  
     if (file == NULL){
         perror("Can't open file");
-        exit(0);
+        exit(1);
     } else {
-        print_e = printf("File opened\n");
-        if (print_e < 0){
-            perror("Can't print");
-            exit(1);
-        }
+        printf("File opened\n");
         fclose(file);
     }
 
-    return 0;
+    exit(0);
 }

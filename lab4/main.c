@@ -95,6 +95,7 @@ int printLines(struct line* first_line){
         }
         line = line->next;
     }
+    return 0;
 }
 
 int freeLines(struct line* first_line){
