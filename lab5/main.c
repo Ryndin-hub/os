@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc < 2){
-        perror("No file given");
+        printf("No file given\n");
         exit(1);
     }
     int fd = open(argv[1], O_RDONLY);
