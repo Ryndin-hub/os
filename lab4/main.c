@@ -2,7 +2,7 @@
 #include <malloc.h>
 #include <string.h>
 
-#define MAX_SIZE 10
+#define FGETS_BUFF_SIZE 10
 
 struct line{
     char* str;
@@ -13,12 +13,12 @@ int readLines(struct line* first_line){
     struct line* line = first_line;
     int size = 0;
     int prev_ended = 1;
-    char* str = malloc(sizeof(char) * MAX_SIZE);
+    char* str = malloc(sizeof(char) * FGETS_BUFF_SIZE);
     if (str == NULL){
         perror("Malloc error");
         return 1;
     }
-    if (fgets(str, MAX_SIZE, stdin) == NULL) {
+    if (fgets(str, FGETS_BUFF_SIZE, stdin) == NULL) {
         perror("Error while reading");
         free(str);
         return 1;
@@ -26,7 +26,7 @@ int readLines(struct line* first_line){
     while(str[0] != '.') {
         int len = strlen(str);
         if (prev_ended != 1){ //объединение строк
-            line->str = realloc(line->str,sizeof(char) * (size + MAX_SIZE));
+            line->str = realloc(line->str,sizeof(char) * (size + FGETS_BUFF_SIZE));
             if (line->str == NULL) {
                 perror("Not enough memory for string");
                 free(str);
@@ -75,7 +75,7 @@ int readLines(struct line* first_line){
                 prev_ended = 1;
             }
         }
-        if (fgets(str, MAX_SIZE, stdin) == NULL) {
+        if (fgets(str, FGETS_BUFF_SIZE, stdin) == NULL) {
             perror("Error while reading");
             free(str);
             return 1;
