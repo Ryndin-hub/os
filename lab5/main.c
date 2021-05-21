@@ -5,6 +5,8 @@
 
 #define NO_FILE_ERROR 1
 #define CANT_OPEN_FILE_ERROR 2
+#define READ_ERROR 3
+#define READ_FAIL -1
 
 int main(int argc, char *argv[]) {
     if (argc < 2){
@@ -17,17 +19,28 @@ int main(int argc, char *argv[]) {
         exit(CANT_OPEN_FILE_ERROR);
     }
     char c;
-    int num_of_lines = 0;
-    while(read(fd, &c, 1)){
+    int num_of_lines = 0, read_result;
+    read_result = read(fd, &c, 1);
+    while(read_result != 0){
+        if (read_result == READ_FAIL){
+            perror("Error while reading");
+            exit(READ_ERROR);
+        }
         if (c == '\n'){
             num_of_lines++;
         }
+        read_result = read(fd, &c, 1);
     }
     lseek(fd, 0, SEEK_SET);
     int line_length = 0, line_num = 0;
     int file_lines_length[num_of_lines], file_offsets[num_of_lines];
     file_offsets[1] = 0;
-    while(read(fd, &c, 1)){
+    read_result = read(fd, &c, 1);
+    while(read_result != 0){
+        if (read_result == READ_FAIL){
+            perror("Error while reading");
+            exit(READ_ERROR);
+        }
         if (c == '\n'){
             line_length++;
             line_num++;
@@ -37,6 +50,7 @@ int main(int argc, char *argv[]) {
         } else {
             line_length++;
         }
+        read_result = read(fd, &c, 1);
     }
     int requested_line;
     while(scanf("%d", &requested_line)){
