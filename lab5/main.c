@@ -8,7 +8,7 @@
 #define READ_ERROR 3
 #define FGETS_ERROR 4
 #define READ_FAIL -1
-#define REQUESTED_LINE_BUFF_SIZE 10
+#define REQUESTED_LINE_BUFF_SIZE 100
 
 int main(int argc, char *argv[]) {
     if (argc < 2){
@@ -62,9 +62,9 @@ int main(int argc, char *argv[]) {
             printf("Fgets error\n");
             exit(FGETS_ERROR);
         }
-        requested_line_size = strnlen(requested_line_str);
+        requested_line_size = strnlen(requested_line_str,REQUESTED_LINE_BUFF_SIZE);
         if (requested_line_size > 6){
-            printf("Line should be between 0 and %d\n", num_of_lines);
+            printf("Input is too big\n", num_of_lines);
             continue;
         }
         int i, second_continue = 0;
