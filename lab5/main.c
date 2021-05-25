@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NO_FILE_ERROR 1
 #define CANT_OPEN_FILE_ERROR 2
@@ -9,6 +10,7 @@
 #define FGETS_ERROR 4
 #define READ_FAIL -1
 #define REQUESTED_LINE_BUFF_SIZE 100
+#define MAXIMUM_REQUEST_SIZE 10
 
 int main(int argc, char *argv[]) {
     if (argc < 2){
@@ -62,13 +64,18 @@ int main(int argc, char *argv[]) {
             printf("Fgets error\n");
             exit(FGETS_ERROR);
         }
-        requested_line_size = strnlen(requested_line_str,REQUESTED_LINE_BUFF_SIZE);
-        if (requested_line_size > 6){
-            printf("Input is too big\n", num_of_lines);
+        requested_line_size = strlen(requested_line_str);
+        if (requested_line_size > MAXIMUM_REQUEST_SIZE){
+            printf("Input is too big\n");
             continue;
         }
         int i, second_continue = 0;
-        for (i = 0; i < requested_line_size - 1; i++){
+        if ((requested_line_str[0] < '0' || requested_line_str[0] > '9') && requested_line_str[0] != '-'){
+            printf("Program needs a number\n");
+            second_continue = 1;
+        }
+        if (second_continue) continue;
+        for (i = 1; i < requested_line_size - 1; i++){
             if (requested_line_str[i] < '0' || requested_line_str[i] > '9'){
                 printf("Program needs a number\n");
                 second_continue = 1;
@@ -83,7 +90,6 @@ int main(int argc, char *argv[]) {
             continue;
         }
         lseek(fd, file_offsets[requested_line], SEEK_SET);
-        i;
         for (i = 0; i < file_lines_length[requested_line]; i++){
             read(fd, &c, 1);
             printf("%c", c);
